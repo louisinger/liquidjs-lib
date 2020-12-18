@@ -642,13 +642,11 @@ class Transaction {
     this.ins.forEach(txIn => {
       bufferWriter.writeSlice(txIn.hash);
       let prevIndex = txIn.index;
-      if (forceZeroFlag === false || forceZeroFlag === undefined) {
-        if (txIn.issuance) {
-          prevIndex = (prevIndex | OUTPOINT_ISSUANCE_FLAG) >>> 0;
-        }
-        if (txIn.isPegin) {
-          prevIndex = (prevIndex | OUTPOINT_PEGIN_FLAG) >>> 0;
-        }
+      if (txIn.issuance) {
+        prevIndex = (prevIndex | OUTPOINT_ISSUANCE_FLAG) >>> 0;
+      }
+      if (txIn.isPegin) {
+        prevIndex = (prevIndex | OUTPOINT_PEGIN_FLAG) >>> 0;
       }
       bufferWriter.writeUInt32(prevIndex);
       bufferWriter.writeVarSlice(txIn.script);
